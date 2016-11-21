@@ -5,12 +5,41 @@ import java.util.Scanner;
 
 public class AplicacionCuentaBancaria {
     
+    public static boolean comprobarNombre(String nombre){
+        boolean nombreValido = false;
+        
+        if(nombre.length() <= 10){
+            nombreValido = true;
+        }else{
+            nombreValido = false;
+        }
+        
+        return nombreValido;
+    }
+    
+    public static String calculoDigitosControl(String entidad, String oficina, String numCompleto){
+        int vFactores[] = new int []{1, 2, 4, 8, 5, 10, 9, 7, 3, 6};
+        int resultadoComprobacion = 0;
+        String codigoComprobacion = "00" + entidad + oficina;
+        
+        for(int i=0;i<codigoComprobacion.length();i++){
+            
+        }
+    }
+    
     public static void validarCodigo(String ccc){
         String vDigitos[] = new String[4];
         String codigo = ccc.trim();
         
         if(codigo.length() == 10){
+            vDigitos[0] = codigo.substring(0, 3);
+            vDigitos[1] = codigo.substring(4, 7);
+            vDigitos[2] = codigo.substring(8, 9);
+            vDigitos[3] = codigo.substring(10, 19);
             
+            
+        }else{
+            System.out.println("Extensión de código errónea");
         }
         
         /*Scanner digitos = new Scanner(ccc);
@@ -24,43 +53,29 @@ public class AplicacionCuentaBancaria {
             }
         }
         */
-        
-        
-        
-        
-    }
-    
-    public static int menu(){
-        Scanner leer = new Scanner(System.in);
-        int opcion = 1;
-        
-        do{
-            System.out.println("1. Ver el número de cuenta completo.");
-            System.out.println("2. Ver el titular de la cuenta.");
-            System.out.println("3. Ver el código de la entidad.");
-            System.out.println("4. Ver el código de la oficina.");
-            System.out.println("5. Ver el número de la cuenta.");
-            System.out.println("6. Ver los dígitos de control de la cuenta.");
-            System.out.println("7. Realizar un ingreso.");
-            System.out.println("8. Retirar efectivo.");
-            System.out.println("9. Consultar saldo.");
-            System.out.println("10. Salir de la aplicación.");
-            
-            System.out.println("");
-            System.out.println("Introduzca la opción que desee realizar");
-            opcion = leer.nextInt();
-        }while(opcion < 1 || opcion > 10);
-        
-        return opcion;
+         
     }
 
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
         String nombre = "";
         String ccc = "";
+        boolean comprobacionNombre = false;
         
-        System.out.println("Introduzca el nombre del titular de la cuenta");
-        nombre = leer.next();
+        do{
+           System.out.println("Introduzca el nombre del titular de la cuenta");
+           nombre = leer.next();
+           
+           comprobacionNombre = comprobarNombre(nombre);
+           
+           if(comprobacionNombre == false){
+               System.out.println("Nombre de titular no válido");
+           }else{
+               System.out.println("Nombre de titular válido");
+           }
+           
+        }while(comprobacionNombre == false);
+        
         System.out.println("Introduzca el CCC de la cuenta completo");
         ccc = leer.next();
         
