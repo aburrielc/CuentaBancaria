@@ -25,23 +25,41 @@ public class AplicacionCuentaBancaria {
         String digitosControl = "";
         int sumaCodigo = 0;
         int resto = 0;
+        int resultado = 0;
         
         for(int i=0;i<codigoComprobacion.length();i++){
-            sumaCodigo += Integer.parseInt(codigoComprobacion.substring(i)) * vFactores[7 - i];
+            sumaCodigo += (Integer.valueOf(codigoComprobacion.substring(i,i+1)) * (vFactores[7 - i]));
         }
         
         resto = sumaCodigo % 11;
-        digitosControl += String.valueOf(11 - resto);
+        resultado = 11 - resto;
         
+        if(resultado == 10){
+            digitosControl += String.valueOf(1);
+        }else if(resultado == 11){
+            digitosControl += String.valueOf(0);
+        }else{
+            digitosControl += String.valueOf(resultado);
+        }
+
         sumaCodigo = 0;
         resto = 0;
+        resultado = 0;
         
         for(int i=0;i<cuenta.length();i++){
-            sumaCodigo += Integer.parseInt(cuenta.substring(i)) * vFactores[9 - i];
+            sumaCodigo += (Integer.valueOf(cuenta.substring(i,i+1)) * (vFactores[9 - i]));
         }
         
         resto = sumaCodigo % 11;
-        digitosControl += String.valueOf(11 - resto);
+        resultado = 11 - resto;
+        
+        if(resultado == 10){
+            digitosControl += String.valueOf(1);
+        }else if(resultado == 11){
+            digitosControl += String.valueOf(0);
+        }else{
+            digitosControl += String.valueOf(resultado);
+        }
         
         return digitosControl;
     }
@@ -71,18 +89,7 @@ public class AplicacionCuentaBancaria {
                 valido = false;
             } 
         }
-        
-        /*Scanner digitos = new Scanner(ccc);
-        
-        digitos.useDelimiter("-");
-        
-        while(digitos.hasNext()){
-            for(int i=0;i<vDigitos.length;i++){
-                vDigitos[i] = digitos.next();
-                System.out.println(vDigitos[i]);
-            }
-        }
-        */
+
         return valido;
     }
 
@@ -90,6 +97,8 @@ public class AplicacionCuentaBancaria {
         Scanner leer = new Scanner(System.in);
         String nombre = "";
         String ccc = "";
+        int opcion = 0;
+        boolean salir = false;
         
         String vDigitos[] = new String[4];
         
@@ -118,6 +127,60 @@ public class AplicacionCuentaBancaria {
             
         }while(comprobacionCuenta == false);
         
-    }
-    
+        for(int i=0;i<vDigitos.length;i++){
+
+            if(i == 3){
+                ccc += vDigitos[i];
+            }else{
+                ccc += vDigitos[i] + "-";
+            }   
+        }
+        
+        CuentaBancaria cuenta = new CuentaBancaria(nombre,ccc,0,vDigitos[0],vDigitos[1],vDigitos[2],vDigitos[3]);
+        
+        do{
+            opcion = Menu.menu();
+        
+            switch(opcion){
+                case 1:
+                    System.out.println("Número de cuenta completo (CCC): " + cuenta.getCodigo());
+                    break;
+                case 2:
+                    System.out.println("Nombre del titular: " + cuenta.getNombre());
+                    break;
+                case 3:
+                    System.out.println("Código de la entidad: " + cuenta.getNumEntidad());
+                    break;
+                case 4:
+                    System.out.println("Código de la oficina: " + cuenta.getNumOficina());
+                    break;
+                case 5:
+                    System.out.println("Número de la cuenta: " + cuenta.getNumCuenta());
+                    break;
+                case 6:
+                    System.out.println("Dígitos de control de la cuenta: " + cuenta.getNumControl());
+                    break;
+                case 7:
+                    System.out.println("Introduzca la cantidad que desea ingresar");
+                    double ingreso = leer.nextDouble();
+                    
+                    cuenta.ingresar(ingreso);
+                    break;
+                case 8:
+                    System.out.println("Introduzca la cantidad que desea retirar");
+                    double retiro = leer.nextDouble();
+                    
+                    cuenta.retirar(retiro);
+                    break;
+                case 9:
+                    System.out.println("Saldo actual: " + cuenta.getSaldo());
+                    break;
+                case 10:
+                    System.out.println("¡Hasta luego!");
+                    salir = true;
+                    break;
+            }
+            
+        }while(salir != true);
+    }    
 }
