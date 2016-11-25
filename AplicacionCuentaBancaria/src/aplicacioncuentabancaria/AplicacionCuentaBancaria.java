@@ -94,7 +94,7 @@ public class AplicacionCuentaBancaria {
      * @param entidad número de entidad de la cuenta.
      * @param oficina número de oficina de la cuenta.
      * @param cuenta número de cuenta.
-     * @return calcula los dígitos de control, en función de los parámetros, y los devuelve.
+     * @return calcula los dígitos de control (en función de los parámetros) y los devuelve.
      */
     public static String calculoDigitosControl(String entidad, String oficina, String cuenta){
         int vFactores[] = new int []{6, 3, 7, 9, 10, 5, 8, 4, 2, 1};
@@ -118,7 +118,8 @@ public class AplicacionCuentaBancaria {
         }else{
             digitosControl += String.valueOf(resultado);
         }
-
+        
+        //Reinicio las variables para poder volver a utilizarlas.
         sumaCodigo = 0;
         resto = 0;
         resultado = 0;
@@ -142,7 +143,7 @@ public class AplicacionCuentaBancaria {
     }
     
     /**
-     * Método que comprueba si los dígitos de control calculados, coinciden con los introducidos por el usuario.
+     * Método que comprueba si los dígitos de control calculados coinciden con los introducidos por el usuario.
      * @param vDigitos vector de los dígitos de una cuenta bancaria(entidad - oficina - dígitos de control - cuenta).
      * @return si los dígitos calculados con el método "calculoDigitosControl" coinciden con los introducidos por el usuario, devuelve true, si no, false.
      */
@@ -151,6 +152,7 @@ public class AplicacionCuentaBancaria {
         String comprobacionDigitos = "";
         boolean valido = false;
         
+        //Suma la extensión del código para la comprobación de la misma.
         for(int i=0;i<vDigitos.length;i++){
             extension += vDigitos[i].length();
         }
@@ -237,7 +239,8 @@ public class AplicacionCuentaBancaria {
                 comprobacionCuenta = validarCodigo(vDigitos);
 
             }while(comprobacionCuenta == false);
-
+            
+            //Para guardar el CCC completo una vez comprobado.
             for(int i=0;i<vDigitos.length;i++){
 
                 if(i == 3){
@@ -263,7 +266,10 @@ public class AplicacionCuentaBancaria {
         int posicion = -1;
         int opcion1 = 0;
         int opcion2 = 0;
+        //Variable que nos permitirá volver al menú de inicio.
         boolean salir = false;
+        
+        //Variable para cerrar la aplicación.
         boolean bandera = false;
         
         do{
@@ -347,6 +353,7 @@ public class AplicacionCuentaBancaria {
                                 case 11:
                                     System.out.println("");
                                     System.out.println("¡Hasta luego!");
+                                    //Necesito que ambas sean true para poder salir completamente, sin realizar antes la opción 10.
                                     salir = true;
                                     bandera = true;
                                     break;
