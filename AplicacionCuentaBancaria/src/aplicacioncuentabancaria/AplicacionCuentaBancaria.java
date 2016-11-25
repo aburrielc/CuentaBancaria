@@ -3,8 +3,17 @@ package aplicacioncuentabancaria;
 
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Andrés Burriel Cantisano
+ */
 public class AplicacionCuentaBancaria {
     
+    /**
+     * Método que busca si hay huecos disponibles en el vector de cuentas bancarias.
+     * @param vCuentas vector de las cuentas bancarias.
+     * @return si hay hueco en el vector, devuelve la posicion del hueco, si no, devuelve -1.
+     */
     public static int buscarHueco(CuentaBancaria vCuentas[]){
         int posicion = -1;
         
@@ -18,6 +27,12 @@ public class AplicacionCuentaBancaria {
         return posicion;
     }
     
+    /**
+     * Método que busca una cuenta en función del nombre del titular de la misma.
+     * @param vCuentas vector de las cuentas bancarias.
+     * @param nombre nombre del titular.
+     * @return si el nombre introducido coincide con el de alguna cuenta, devuelve la posición de la misma, si no, devuelve -1.
+     */
     public static int buscarCuenta(CuentaBancaria vCuentas[], String nombre){
         int posicion = -1;
         
@@ -32,6 +47,11 @@ public class AplicacionCuentaBancaria {
         return posicion;
     }
     
+    /**
+     * Método que comprueba si el nombre del titular tiene una determinada longitud.
+     * @param nombre nombre del titular.
+     * @return si la longitud del nombre del titular es menor o igual a 10, devuelve true, si no, devuelve false.
+     */
     public static boolean comprobarNombre(String nombre){
         boolean nombreValido = false;
         
@@ -48,6 +68,11 @@ public class AplicacionCuentaBancaria {
         return nombreValido;
     }
     
+    /**
+     * Método que comprueba si el saldo introducido es válido, es decir, si la cantidad es +.
+     * @param saldo cantidad de saldo de la cuenta.
+     * @return si el saldo introducido es mayor o igual a 0, devuelve true, si no, devuelve false.
+     */
     public static boolean comprobarSaldo(double saldo){
         boolean saldoValido = false;
         
@@ -64,6 +89,13 @@ public class AplicacionCuentaBancaria {
         return saldoValido;
     }
     
+    /**
+     * Método que calcula los dígitos de control de una cuenta bancaria.
+     * @param entidad número de entidad de la cuenta.
+     * @param oficina número de oficina de la cuenta.
+     * @param cuenta número de cuenta.
+     * @return calcula los dígitos de control, en función de los parámetros, y los devuelve.
+     */
     public static String calculoDigitosControl(String entidad, String oficina, String cuenta){
         int vFactores[] = new int []{6, 3, 7, 9, 10, 5, 8, 4, 2, 1};
         String codigoComprobacion = entidad + oficina;
@@ -109,6 +141,11 @@ public class AplicacionCuentaBancaria {
         return digitosControl;
     }
     
+    /**
+     * Método que comprueba si los dígitos de control calculados, coinciden con los introducidos por el usuario.
+     * @param vDigitos vector de los dígitos de una cuenta bancaria(entidad - oficina - dígitos de control - cuenta).
+     * @return si los dígitos calculados con el método "calculoDigitosControl" coinciden con los introducidos por el usuario, devuelve true, si no, false.
+     */
     public static boolean validarCodigo(String vDigitos[]){
         int extension = 0;
         String comprobacionDigitos = "";
@@ -140,6 +177,10 @@ public class AplicacionCuentaBancaria {
         return valido;
     }
     
+    /**
+     * Método que crea una cuenta bancaria.
+     * @param vCuentas vector de las cuentas bancarias.
+     */
     public static void crearCuenta(CuentaBancaria vCuentas[]){
         Scanner leer = new Scanner(System.in);
         String vDigitos[] = new String[4];
@@ -164,7 +205,7 @@ public class AplicacionCuentaBancaria {
             do{
             System.out.println("");
             System.out.println("Introduzca el nombre del titular de la cuenta");
-            nombre = leer.next();
+            nombre = leer.next().toUpperCase();
 
             comprobacionNombre = comprobarNombre(nombre);
 
@@ -211,19 +252,26 @@ public class AplicacionCuentaBancaria {
             vCuentas[hueco] = cuenta;
         }      
     }
-
+    
+    /**
+     * Método main.
+     * @param args 
+     */
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
+        int numCuentas = 0;
         int posicion = -1;
         int opcion1 = 0;
         int opcion2 = 0;
         boolean salir = false;
         boolean bandera = false;
         
-        System.out.println("");
-        System.out.println("Introduzca el número de cuentas que quiera agregar");
-        int numCuentas = leer.nextInt();
-        
+        do{
+            System.out.println("");
+            System.out.println("Introduzca el número de cuentas que quiera agregar");
+            numCuentas = leer.nextInt();
+        }while(numCuentas <= 0);
+
         CuentaBancaria vCuentas[] = new CuentaBancaria[numCuentas];
         
         do{
@@ -236,7 +284,7 @@ public class AplicacionCuentaBancaria {
                 case 2:
                     System.out.println("");
                     System.out.println("Introduzca el nombre del titular de la cuenta con la que desee operar");
-                    String nombre = leer.next();
+                    String nombre = leer.next().toUpperCase();
 
                     posicion = buscarCuenta(vCuentas,nombre);
                     
@@ -299,6 +347,7 @@ public class AplicacionCuentaBancaria {
                                 case 11:
                                     System.out.println("");
                                     System.out.println("¡Hasta luego!");
+                                    salir = true;
                                     bandera = true;
                                     break;
                             }
