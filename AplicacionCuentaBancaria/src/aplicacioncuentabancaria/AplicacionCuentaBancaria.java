@@ -303,6 +303,7 @@ public class AplicacionCuentaBancaria {
                         
                         do{
                             opcion2 = Menu.menu();
+                            salir = false;
 
                             switch(opcion2){
                                 case 1:
